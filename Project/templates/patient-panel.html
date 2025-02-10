@@ -363,40 +363,41 @@ table {
         </script>
       <div class="tab-pane fade" id="list-pres" role="tabpanel" aria-labelledby="list-pres-list">
         
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Doctor Name</th>
-                    <th>Appointment ID</th>
-                    <th>Appointment Date</th>
-                    <th>Appointment Time</th>
-                    <th>Diseases</th>
-                    <th>Allergies</th>
-                    <th>Prescriptions</th>
-                    <th>Bill Payment</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for row in prescription %}
-                  <tr>
-                      <td>{{ row[0] }}</td>
-                      <td>{{ row[1] }}</td>
-                      <td>{{ row[2] }}</td>
-                      <td>{{ row[3] }}</td>
-                      <td>{{ row[6] }}</td>
-                      <td>{{ row[5] }}</td>
-                      <td>{{ row[4] }}</td>
-                            <td>
-                              <form action="bill_template.html" method="GET">
-                                <a href="bill_template.html">
-                                  <input type="hidden" name="prescribe_id" value="{{ row[8] }}"/>
-                                  <input type="submit" name="pay_bill" onclick="alert('Bill Paid Successfully');" class="btn btn-success" value="Print"/>
-                                </a>
-                              </form>
-                          </td>
-                  </tr>
-                  {% endfor %}
-              </table>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Doctor Name</th>
+              <th>Appointment ID</th>
+              <th>Appointment Date</th>
+              <th>Appointment Time</th>
+              <th>Diseases</th>
+              <th>Allergies</th>
+              <th>Prescriptions</th>
+              <th>Bill Payment</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in prescription %}
+            <tr>
+              <td>{{ row.Doctor_First_Name }} {{ row.Doctor_Last_Name }}</td>
+              <td>{{ row.Appointment_ID }}</td>
+              <td>{{ row.Appointment_Date }}</td>
+              <td>{{ row.Appointment_Time }}</td>
+              <td>{{ row.Diseases }}</td>
+              <td>{{ row.Allergies }}</td>
+              <td>{{ row.Prescriptions }}</td>
+              <td>{{ row.Bill_Payment }}</td>
+              <td>
+                <form action="/bill_template.html" method="GET">
+                  <input type="hidden" name="prescription_id" value="{{ row.Prescription_ID }}"/>
+                  <input type="submit" name="pay_bill" class="btn btn-success" value="Print" onclick="alert('Bill Paid Successfully');"/>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
         <br>
       </div>
     </div>

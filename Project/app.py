@@ -9,7 +9,7 @@ app.secret_key = 'DEPI_Project'
 
 
 #add the model to app
-model = joblib.load(r'C:\Users\HP\dev\HMS\Project\length_of_stay_model_compressed.pkl')
+#model = joblib.load(r'C:\Users\HP\dev\HMS\Project\length_of_stay_model_compressed.pkl')
 
 
 def get_db_connection():
@@ -21,8 +21,8 @@ def get_db_connection():
     """
     connection_string = (
         'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=YOUSSEF-ATEF\SQLEXPRESS;'
-        'DATABASE=HMS;'
+        'SERVER=AHMED\SQLEXPRESS;'
+        'DATABASE=HMS1;'
         'Trusted_Connection=yes;'
     )
     conn = pyodbc.connect(connection_string)
@@ -683,10 +683,11 @@ def patient_panel():
         conn.close()
     else:
         return redirect(url_for('index1'))
+    
 
     return render_template('patient-panel.html', appointments=appointments, prescription=prescription,
                            username=username, spec=spec, doctorList=doctorList)
-
+    
 
 @app.route('/get-doctors', methods=['POST'])
 def get_doctors():
@@ -816,8 +817,8 @@ def cancel_appointment(appointment_id):
     except Exception as e:
         print(e)
         return jsonify({'success': False}), 500
-
-
+    
+    
 @app.route('/bill_template.html')
 def Payment():
     """
@@ -832,7 +833,9 @@ def Payment():
     """
     patientId = session['user_id']
     Role = session['role']
-    prescribe_id = request.args.get('prescribe_id')
+    prescribe_id = request.args.get('prescription_id')#called the correct column name instead of prescribe_id 
+    #print(Prescribe_id)
+    #print(request.args)
     if patientId and Role == 'Patient':
         conn = get_db_connection()
         cursor = conn.cursor()

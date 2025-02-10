@@ -86,24 +86,25 @@ GO
 CREATE PROCEDURE ViewPrescriptionForSpecificPatient (@PatientID INT)
 AS
 BEGIN
-    SELECT
-	    concat(d.first_name,' ' ,d.last_name) AS DoctorName,
-	    a.appointment_id AS Appointment_ID,
-        CONVERT(VARCHAR, a.date, 101) AS Appointment_Date,
-        CONVERT(VARCHAR, a.date, 108) AS Appointment_Time,
+   SELECT
+        p.prescription_id AS Prescription_ID, -- Included prescription_id solved bug not outputting the bill
+        d.first_name AS Doctor_First_Name,
+        d.last_name AS Doctor_Last_Name,
+        a.appointment_id AS Appointment_ID,
+        CONVERT(VARCHAR, a.date, 101) AS Appointment_Date, -- Format date as MM/DD/YYYY
+        CONVERT(VARCHAR, a.date, 108) AS Appointment_Time, -- Format time as HH:MI:SS
         p.medication AS Prescriptions, 
         p.allergy AS Allergies,
         p.dosage AS Diseases,
-        p.payment_status AS Bill_Payment,
-		p.prescription_id
+        p.payment_status AS Bill_Payment
     FROM 
         Prescriptions p
-    JOIN 
+    INNER JOIN 
         Users u ON p.patient_id = u.user_id
-    JOIN 
+    INNER JOIN 
         Users d ON p.doctor_id = d.user_id
-	JOIN 
-	    Appointments a ON p.appointment_id = a.appointment_id
+    INNER JOIN 
+        Appointments a ON p.appointment_id = a.appointment_id -- Corrected JOIN condition
     WHERE 
         p.patient_id = @PatientID;
 END
